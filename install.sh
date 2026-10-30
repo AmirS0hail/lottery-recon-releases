@@ -154,7 +154,11 @@ if [ "$os_name" = "Darwin" ]; then
   echo " Shortcut: $desktop_link"
   echo " Saved runs stay in $data_root"
   echo ""
-  echo " Open Lottery Recon from the desktop shortcut."
+  if open "$install_app"; then
+    echo " Opening Lottery Recon."
+  else
+    echo " Open Lottery Recon from the desktop shortcut."
+  fi
   echo ""
 else
   if command -v unzip >/dev/null 2>&1; then
@@ -200,6 +204,12 @@ EOF
   echo " Menu entry: $desktop_file"
   echo " Saved runs stay in $data_root"
   echo ""
-  echo " Open Lottery Recon from the application menu."
+  launch_dir=$(dirname "$installed_binary")
+  if command -v setsid >/dev/null 2>&1; then
+    setsid sh -c 'cd "$1" && exec "$2"' sh "$launch_dir" "$installed_binary" >/dev/null 2>&1 &
+    echo " Opening Lottery Recon."
+  else
+    echo " Open Lottery Recon from the application menu."
+  fi
   echo ""
 fi

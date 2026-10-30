@@ -105,7 +105,12 @@ try {
     Write-Host " Shortcut: $shortcutPath"
     Write-Host " Saved runs stay in $DataRoot"
     Write-Host ""
-    Write-Host " Open Lottery Recon from the desktop shortcut."
+    try {
+        Start-Process -FilePath $exe -WorkingDirectory (Split-Path -Parent $exe)
+        Write-Host " Opening Lottery Recon."
+    } catch {
+        Write-Host " Open Lottery Recon from the desktop shortcut."
+    }
     Write-Host ""
 } finally {
     if (Test-Path -LiteralPath $tempRoot) {

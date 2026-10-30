@@ -28,7 +28,7 @@ On the PC that will run the tool:
 powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/AmirS0hail/lottery-recon-releases/main/install.ps1 | iex"
 ```
 
-The script downloads the latest release, checks `SHA256SUMS`, and stops if the checksum does not match. It installs under `%LOCALAPPDATA%\LotteryRecon\app` and adds a desktop shortcut named Lottery Recon.
+The script downloads the latest release, checks `SHA256SUMS`, and stops if the checksum does not match. It installs under `%LOCALAPPDATA%\LotteryRecon\app`, adds a desktop shortcut named Lottery Recon, and opens the app.
 
 The launcher is not code-signed. Windows may show an unsigned-app warning the first time it opens.
 
@@ -40,7 +40,7 @@ On an Apple Silicon Mac:
 curl -fsSL https://raw.githubusercontent.com/AmirS0hail/lottery-recon-releases/main/install.sh | sh
 ```
 
-The script downloads the latest release, checks `SHA256SUMS`, and stops if the checksum does not match. It installs `~/Applications/Lottery Recon.app` and adds a desktop shortcut to that app. Saved runs stay in `~/Library/Application Support/LotteryReconTool`.
+The script downloads the latest release, checks `SHA256SUMS`, and stops if the checksum does not match. It installs `~/Applications/Lottery Recon.app`, adds a desktop shortcut to that app, and opens it. Saved runs stay in `~/Library/Application Support/LotteryReconTool`.
 
 The app is not notarized. The first open can require approval under Privacy and Security. This release is for Apple Silicon only.
 
@@ -52,9 +52,17 @@ On 64-bit Intel or AMD Linux with a desktop session:
 curl -fsSL https://raw.githubusercontent.com/AmirS0hail/lottery-recon-releases/main/install.sh | sh
 ```
 
-The script downloads the latest release, checks `SHA256SUMS`, and stops if the checksum does not match. It installs under `~/.local/share/LotteryRecon/app`, or under `$XDG_DATA_HOME/LotteryRecon/app` when that variable is set, and adds a Lottery Recon application menu entry. Saved runs stay in `~/.local/share/LotteryReconTool`, or in `$XDG_DATA_HOME/LotteryReconTool` when that variable is set.
+The script downloads the latest release, checks `SHA256SUMS`, and stops if the checksum does not match. It installs under `~/.local/share/LotteryRecon/app`, or under `$XDG_DATA_HOME/LotteryRecon/app` when that variable is set, adds a Lottery Recon application menu entry, and opens the app. Saved runs stay in `~/.local/share/LotteryReconTool`, or in `$XDG_DATA_HOME/LotteryReconTool` when that variable is set.
 
 The launcher opens a window on a normal desktop session. A machine without a display cannot start it.
+
+## Update
+
+Open Lottery Recon. When a newer release exists, the page shows that version and an Update button. Update closes this copy, downloads the latest release, checks `SHA256SUMS`, and opens the new one. Saved runs stay on this computer.
+
+A copy that does not show the button, including one unpacked by hand, is updated by running the install command for this computer again.
+
+The button arrives with the release that contains it. A copy from before that release is updated once with the install command.
 
 ## What the app reports
 
@@ -67,22 +75,56 @@ An older folder that was copied onto a Windows PC by hand is not registered with
 1. Quit the old launcher.
 2. Delete the folder that was originally copied onto this PC, and delete any shortcut that still points at it.
 3. Leave `%LOCALAPPDATA%\LotteryReconTool` in place. That folder holds saved runs.
-4. Run the Windows install command above.
-5. Open the new Lottery Recon shortcut.
+4. Run the Windows install command above. It opens Lottery Recon when the install finishes.
+5. Use the new Lottery Recon shortcut the next time.
 
 ## Remove this install
 
+Quit Lottery Recon first. The uninstaller removes the app and the shortcut or menu entry. Saved runs stay unless purge is set.
+
 ### Windows
 
-Quit the app, delete the Lottery Recon shortcut, and delete `%LOCALAPPDATA%\LotteryRecon\app`. Saved runs remain in `%LOCALAPPDATA%\LotteryReconTool` until that folder is deleted.
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/AmirS0hail/lottery-recon-releases/main/uninstall.ps1 | iex"
+```
+
+That deletes the Lottery Recon shortcut and `%LOCALAPPDATA%\LotteryRecon\app`. Saved runs remain in `%LOCALAPPDATA%\LotteryReconTool`.
+
+To delete the app and saved runs, pass `-Purge` or `--purge` when the script is run as a file, or set `LOTTERY_RECON_PURGE` in the same command:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$env:LOTTERY_RECON_PURGE='1'; irm https://raw.githubusercontent.com/AmirS0hail/lottery-recon-releases/main/uninstall.ps1 | iex"
+```
 
 ### Mac
 
-Quit the app, delete the Desktop shortcut, and delete `~/Applications/Lottery Recon.app`. Saved runs remain in `~/Library/Application Support/LotteryReconTool` until that folder is deleted.
+```bash
+curl -fsSL https://raw.githubusercontent.com/AmirS0hail/lottery-recon-releases/main/uninstall.sh | sh
+```
+
+That deletes the Desktop shortcut and `~/Applications/Lottery Recon.app`. Saved runs remain in `~/Library/Application Support/LotteryReconTool`.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/AmirS0hail/lottery-recon-releases/main/uninstall.sh | sh -s -- --purge
+```
+
+`--purge` and `-Purge` also delete that saved-runs folder.
 
 ### Linux
 
-Quit the app, delete `~/.local/share/applications/lottery-recon.desktop` (or `$XDG_DATA_HOME/applications/lottery-recon.desktop` when that variable is set), and delete `~/.local/share/LotteryRecon/app` (or `$XDG_DATA_HOME/LotteryRecon/app`). Saved runs remain in the LotteryReconTool data folder until that folder is deleted.
+```bash
+curl -fsSL https://raw.githubusercontent.com/AmirS0hail/lottery-recon-releases/main/uninstall.sh | sh
+```
+
+That deletes `lottery-recon.desktop` and the `LotteryRecon/app` directory under `~/.local/share`, or under `$XDG_DATA_HOME` when that variable is set. Saved runs remain in the `LotteryReconTool` folder next to it.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/AmirS0hail/lottery-recon-releases/main/uninstall.sh | sh -s -- --purge
+```
+
+`--purge` and `-Purge` also delete that saved-runs folder. `LOTTERY_RECON_PURGE=1` does the same on Mac and Linux.
+
+The installed app also has a Remove control on its launcher window. That removes the app and the shortcut, and it leaves saved runs in place. It does not purge.
 
 ## This repository
 
@@ -92,6 +134,8 @@ The installers on this page download the latest build from [Releases](https://gi
 |---|---|
 | `install.ps1` | Windows installer |
 | `install.sh` | Mac and Linux installer |
+| `uninstall.ps1` | Windows uninstaller |
+| `uninstall.sh` | Mac and Linux uninstaller |
 | [Releases](https://github.com/AmirS0hail/lottery-recon-releases/releases) | `LotteryReconLauncher-windows-x64.zip`, `LotteryReconLauncher-macos-arm64.zip`, `LotteryReconLauncher-linux-x64.zip`, and `SHA256SUMS` |
 
 Source code is not published here.
