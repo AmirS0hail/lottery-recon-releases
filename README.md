@@ -58,11 +58,11 @@ The launcher opens a window on a normal desktop session. A machine without a dis
 
 ## Update
 
-Open Lottery Recon. When a newer release exists, the page shows that version and an Update button. Update closes this copy, downloads the latest release, checks `SHA256SUMS`, and opens the new one. Saved runs stay on this computer.
+Open Lottery Recon. When a newer release exists, the page shows that version and an Update button. Click Update once. The page shows the download and the check. Lottery Recon then closes, a window shows the install, and the new version opens. The update notice is gone after that version opens. Saved runs stay on this computer.
 
 A copy that does not show the button, including one unpacked by hand, is updated by running the install command for this computer again.
 
-The button arrives with the release that contains it. A copy from before that release is updated once with the install command.
+A copy from before this release, including one whose Update button never finishes, is updated once with the install command. Later updates use the button.
 
 ## What the app reports
 
