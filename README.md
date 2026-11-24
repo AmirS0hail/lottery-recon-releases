@@ -6,6 +6,12 @@ The app runs locally. It does not sign in to a lottery system, and it does not u
 
 This repository is the public download page. It holds the installers and the release files for Windows, Mac, and Linux. The application source stays private.
 
+## Demo
+
+https://github.com/user-attachments/assets/0550dd45-489e-42e8-9ee5-f6f2189fd34f
+
+
+
 ## What you can do with it
 
 - Start the app from a desktop shortcut. It opens in your browser on this computer.
